@@ -4,6 +4,7 @@ import java.util.Arrays;
 Server server;
 
 int state = 2;
+int dataOut = 0;
 
 ArrayList<Player> players;
 TextBox nameBox;
@@ -23,7 +24,7 @@ void setup() {
 }
 
 void draw() {
-  server.write(state);
+  server.write(dataOut);
   background(#3399ff);
   if (state == 2  ) {
     fill(255);
@@ -74,9 +75,9 @@ void draw() {
     fill(255);
     stroke(0);
     strokeWeight(5);
-    rect(width/4 - width/8, 150, width-500 ,height-100);
-    rect(0, 25, width, 100);
-    rect(width-250, 150, width, height);
+    rect(width/4 - width/8, height/2-height/2.75, width-width*0.263, height);
+    rect(-40, 25, width+50, 100);
+    rect(width-width/7.5, height/2-height/2.75, width, height);
   }
 }
 
@@ -90,9 +91,8 @@ void mouseClicked() {
   if (state == 2) {
     if (startButton.hovering()) {
       startButton.joined = state = 2;
-      //generateLevel();
-      //startGame();
       state = 3;
+      dataOut = 1;
     }
   }
 }
