@@ -5,19 +5,24 @@ Server server;
 
 int state = 2;
 int dataOut = 0;
+boolean toggle = false;
+//boolean LeftButton = false;
 
 ArrayList<Player> players;
+//ArrayList<ArrayList<PVector>> groups;
 TextBox nameBox;
 Button startButton;
 Button restartButton;
+Draw tegn;
 
 void setup() {
   fullScreen();
   server = new Server(this, 10000);
-  players = new ArrayList<Player>();
+  players = new  ArrayList<Player>();
   nameBox = new TextBox(width / 4 - width / 6, round(height / 1.8), width / 3, height / 12);
   startButton = new Button(width / 4 - width / 10, round(height / 1.5), width / 5, height / 12, "START!");
   restartButton = new Button(width / 2 - width / 10, height / 2 - height / 24, width / 5, height / 12, "RESTART");
+  //groups = new ArrayList<ArrayList<PVector>>();
   Player host = new Player(null);
   host.joined = true;
   players.add(host);
@@ -43,8 +48,6 @@ void draw() {
       text(player.joined ? "READY" : "...", width / 1.2, height / 11 * (i + 1));
     }
     textAlign(CENTER);
-
-    // Update ready/name list
     Client player = server.available();
     if (player != null) {
       final byte[] rbytes = player.readBytes();
@@ -65,8 +68,6 @@ void draw() {
           return;
         }
       }
-
-      // Accept new players
       byte[] bytes = new byte[6];
       bytes[0] = byte(0);
       players.add(new Player(player));
@@ -78,6 +79,20 @@ void draw() {
     rect(width/4 - width/8, height/2-height/2.75, width-width*0.263, height);
     rect(-40, 25, width+50, 100);
     rect(width-width/7.5, height/2-height/2.75, width, height);
+    noFill();
+    if (toggle == true) beginShape();
+    if (toggle == false) endShape();
+    /* if (LeftButton) {
+     groups.get(groups.size() - 1).add(new PVector(mouseX, mouseY));
+     }
+     
+     for (ArrayList<PVector> group : groups) {
+     beginShape();
+     for (PVector pos : group) {
+     vertex(pos.x, pos.y);
+     }
+     }
+     endShape();*/
   }
 }
 
@@ -94,5 +109,22 @@ void mouseClicked() {
       state = 3;
       dataOut = 1;
     }
+  }
+}
+
+
+void mousePressed() {
+  if (state == 3) {
+    //LeftButton = true;
+    //groups.add(new ArrayList<PVector>());
+    
+    toggle = true;
+  }
+}
+
+void mouseReleased() {
+  if (state == 3) {
+    toggle = false;
+    //LeftButton = false;
   }
 }
